@@ -1,0 +1,782 @@
+{
+  "project": "FloodWing",
+  "fast_mode": true,
+  "seed": 42,
+  "versions": {
+    "python": "3.13.18",
+    "numpy": "2.5.3",
+    "scipy": "1.18.1",
+    "pandas": "3.0.5",
+    "matplotlib": "3.11.2",
+    "seaborn": "0.13.2",
+    "sklearn": "1.9.1",
+    "torch": "2.15.0+cu132",
+    "qiskit": "1.4.6",
+    "qiskit_aer": "0.18.2",
+    "qiskit_algorithms": "0.4.0",
+    "qiskit_optimization": "0.7.0",
+    "rasterio": "1.5.2",
+    "gcsfs": "2026.10.1"
+  },
+  "primitives": "qiskit-algorithms sampler API: V2 | sampler: qiskit_aer.primitives.SamplerV2 (8192 shots) | transpiler: preset pass manager (AerSimulator) | final sample: 4096 shots | exact probabilities: qiskit.quantum_info.Statevector",
+  "config": {
+    "seed": 42,
+    "fast_mode": true,
+    "work_dir": "/home/claude/floodwing",
+    "use_synthetic": false,
+    "n_chips_full": 60,
+    "n_chips_fast": 24,
+    "feature_size": 64,
+    "synthetic_size": 128,
+    "min_valid_frac": 0.05,
+    "flood_frac_min": 0.02,
+    "flood_frac_max": 0.9,
+    "gcs_bucket": "sen1floods11",
+    "gcs_version": "v1.1",
+    "download_budget_s": 420.0,
+    "max_download_attempts_factor": 4,
+    "rows": 3,
+    "cols": 4,
+    "k": 4,
+    "base_pos": [
+      -1.0,
+      0.0
+    ],
+    "radio_range": 2.25,
+    "overlap_mode": "neighbors8",
+    "a": 0.6,
+    "b": 0.3,
+    "penalty_scale": 2.0,
+    "block_penalty_scale": 1.0,
+    "target_weights": [
+      0.45,
+      0.35,
+      0.2
+    ],
+    "target_noise": 0.03,
+    "edge_scale_px": 6.0,
+    "epochs_full": 30,
+    "epochs_fast": 8,
+    "batch_size": 8,
+    "lr": 0.001,
+    "val_frac": 0.2,
+    "qaoa_reps": 2,
+    "maxiter_full": 150,
+    "maxiter_fast": 60,
+    "restarts_full": 3,
+    "restarts_fast": 1,
+    "shots": 4096,
+    "opt_shots": 8192,
+    "scale_hamiltonian": true,
+    "ramp_dt": 0.5,
+    "cobyla_rhobeg": 0.15,
+    "cvar_alpha": null,
+    "n_random": 1000,
+    "sa_steps": 3000,
+    "sa_t0": 1.0,
+    "sa_t1": 0.01,
+    "n_instances_full": 20,
+    "n_instances_fast": 8,
+    "boost_factor": 1.5,
+    "reduce_factor": 0.5,
+    "w_cap": 2.0,
+    "use_local_llm": false,
+    "local_llm_model": "Qwen/Qwen2.5-0.5B-Instruct",
+    "run_bonus_depth": true,
+    "run_bonus_penalty": true,
+    "run_bonus_warmstart": true,
+    "run_bonus_optimizers": true,
+    "run_bonus_xy_mixer": true,
+    "run_bonus_noise": true,
+    "run_bonus_landscape": true,
+    "run_bonus_scaling": true,
+    "bonus_restarts": 1,
+    "bonus_instances_full": 6,
+    "bonus_instances_fast": 3,
+    "depth_values_full": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "depth_values_fast": [
+      1,
+      2,
+      3
+    ],
+    "penalty_multipliers": [
+      0.25,
+      0.5,
+      1.0,
+      2.0,
+      4.0
+    ],
+    "noise_levels": [
+      0.0,
+      0.5,
+      1.0,
+      2.0,
+      4.0
+    ],
+    "noise_p1": 0.001,
+    "noise_p2": 0.01,
+    "noise_readout": 0.01,
+    "noise_shots": 4096,
+    "landscape_points_full": 30,
+    "landscape_points_fast": 20,
+    "scaling_grids": [
+      [
+        2,
+        4
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        2,
+        7
+      ],
+      [
+        4,
+        4
+      ]
+    ],
+    "scaling_evals": 5,
+    "make_gif": true,
+    "time_budget_fast_s": 1500.0,
+    "time_budget_full_s": 5100.0,
+    "n_chips": 24,
+    "epochs": 8,
+    "maxiter": 60,
+    "restarts": 1,
+    "n_instances": 8
+  },
+  "timings_s": {
+    "data": 0.7100754269999925,
+    "heatmap_cnn": 1.777458451000257,
+    "agent": 15.476925441000276,
+    "qubo": 0.07681681500025661,
+    "demo_solve": 2.236783204000403,
+    "evaluation": 19.36645703100021,
+    "bonus_depth": 21.443608865999977,
+    "bonus_penalty": 36.33922727399977,
+    "bonus_warmstart": 18.433547183999963,
+    "bonus_optimizers": 61.49314374400001,
+    "bonus_noise": 73.3714683080002,
+    "bonus_landscape": 1.8588756479998665,
+    "bonus_scaling": 3.4436973440001566,
+    "bonus_xy_mixer": 12.964035523999883,
+    "figures": 5.627353239000058
+  },
+  "total_runtime_s": 281.31337892400006,
+  "issues_and_skips": [
+    "data source: synthetic: 24 (synthetic chips were used)"
+  ],
+  "limitations": [
+    "n <= 16 variables are solved exactly in milliseconds by brute force, so no quantum advantage is claimed.",
+    "QAOA with the standard X mixer spends most of its effort on the sum x = k penalty: P(optimal) stays a small multiple of uniform guessing at p <= 3, and results depend on the penalty weight (see the sweep).",
+    "The QAOA placement is decoded from the exact statevector distribution (simulator-only). The hardware-realistic most-frequent-shot decoding (QAOA-shots) is far noisier and is reported separately.",
+    "QAOA-best-sample (best of 4096 shots over 495 valid states) is close to brute force and is not evidence of quantum quality on its own.",
+    "Survivor likelihood is a hand-defined proxy (0.45 flood + 0.35 built-up + 0.20 edge + noise), not real survivor data, so the CNN learns a known function.",
+    "The pairwise radio reward does not guarantee a connected relay chain to base; the post-hoc connectivity rate is reported per method.",
+    "The agent is a keyword parser and is brittle to unusual phrasing; a human confirmation step is needed in practice.",
+    "Simulator and simple noise-model results do not predict real-hardware behaviour.",
+    "Scaling beyond 16 qubits was not tested.",
+    "Default radio range is 2.25 cells, not 1.5: with R = 1.5 the radio matrix equals the 8-neighbour overlap matrix and the overlap/connectivity terms partly cancel."
+  ],
+  "data": {
+    "n_chips": 24,
+    "sources": "synthetic: 24",
+    "proxy_target": "clip(0.45*flood + 0.35*built_up + 0.20*edge + N(0, 0.03), 0, 1)"
+  },
+  "cnn": {
+    "n_params": 23905,
+    "device": "cpu",
+    "validation": {
+      "mae": 0.040804486721754074,
+      "pearson_r": 0.955861508846283,
+      "spearman_rho": 0.9340928035565436,
+      "topk_overlap": 0.8
+    },
+    "train": {
+      "mae": 0.04093319922685623,
+      "pearson_r": 0.9685908555984497,
+      "spearman_rho": 0.963778644232882,
+      "topk_overlap": 0.881578947368421
+    },
+    "mean_predictor_val_mae": 0.133088618516922,
+    "epochs": 8
+  },
+  "qubo": {
+    "n_qubits": 12,
+    "k": 4,
+    "a": 0.6,
+    "b": 0.3,
+    "P": 3.8000000000000003,
+    "P_block": 3.8000000000000003,
+    "radio_range": 2.25,
+    "n_pauli_terms": 78,
+    "ising_offset": 25.10668644998225,
+    "max_abs_qp_vs_matrix": 4.263256414560601e-14,
+    "qubo_ground_state_valid": true,
+    "numpy_eigensolver_objective": -3.1322301834821786,
+    "exact_objective": -3.1322301834821786,
+    "eigensolver_matches_exact": true,
+    "blocked_handling": "linear penalty P_block * x_i (variable kept so qubit map is fixed)",
+    "n_quadratic_terms": 53
+  },
+  "demo": {
+    "name": "demo_synthetic_009",
+    "Exact": {
+      "cells": [
+        "A3",
+        "C2",
+        "C3",
+        "C4"
+      ],
+      "objective": -3.1322301834821786,
+      "gap": 0.0,
+      "connected": true,
+      "p_optimal": null,
+      "p_valid": null
+    },
+    "QAOA": {
+      "cells": [
+        "A1",
+        "A3",
+        "C2",
+        "C4"
+      ],
+      "objective": -3.0604593586176634,
+      "gap": 0.022913649591590944,
+      "connected": true,
+      "p_optimal": 0.0011640342397177563,
+      "p_valid": 0.5108381159650179
+    },
+    "QAOA-shots": {
+      "cells": [
+        "B2",
+        "B3",
+        "B4",
+        "C3"
+      ],
+      "objective": -0.8451943650841685,
+      "gap": 0.7301621159449575,
+      "connected": true,
+      "p_optimal": 0.000732421875,
+      "p_valid": 0.51611328125
+    },
+    "QAOA-best-sample": {
+      "cells": [
+        "A3",
+        "C2",
+        "C3",
+        "C4"
+      ],
+      "objective": -3.1322301834821786,
+      "gap": 0.0,
+      "connected": true,
+      "p_optimal": 0.000732421875,
+      "p_valid": 0.51611328125
+    },
+    "Greedy": {
+      "cells": [
+        "A2",
+        "A4",
+        "C3",
+        "C4"
+      ],
+      "objective": -2.9240916460752473,
+      "gap": 0.06645058798824885,
+      "connected": true,
+      "p_optimal": null,
+      "p_valid": null
+    },
+    "SA": {
+      "cells": [
+        "A3",
+        "C2",
+        "C3",
+        "C4"
+      ],
+      "objective": -3.1322301834821786,
+      "gap": 0.0,
+      "connected": true,
+      "p_optimal": null,
+      "p_valid": null
+    },
+    "Random": {
+      "cells": [
+        "B3",
+        "B4",
+        "C1",
+        "C2"
+      ],
+      "objective": -1.1235677437905225,
+      "gap": 0.6412882585335973,
+      "connected": false,
+      "p_optimal": null,
+      "p_valid": null
+    }
+  },
+  "evaluation": {
+    "n_instances": 8,
+    "per_method": [
+      {
+        "method": "Exact",
+        "n": 8,
+        "objective_mean": -3.8069400420878106,
+        "objective_std": 0.43010940125208513,
+        "gap_mean": 0.0,
+        "gap_std": 0.0,
+        "gap_median": 0.0,
+        "valid_rate": 1.0,
+        "coverage_mean": 2.6444400420878083,
+        "overlap_mean": 0.5,
+        "connected_rate": 1.0,
+        "p_valid_mean": null,
+        "p_optimal_mean": null,
+        "evals_mean": 495.0,
+        "runtime_mean_s": 0.0005359946251246583,
+        "win_vs_exact": 0,
+        "tie_vs_exact": 8,
+        "loss_vs_exact": 0
+      },
+      {
+        "method": "QAOA",
+        "n": 8,
+        "objective_mean": -3.774140655435626,
+        "objective_std": 0.45802795246468603,
+        "gap_mean": 0.009433979289314097,
+        "gap_std": 0.01794226294648104,
+        "gap_median": 0.0,
+        "valid_rate": 1.0,
+        "coverage_mean": 2.4241406554356217,
+        "overlap_mean": 0.25,
+        "connected_rate": 1.0,
+        "p_valid_mean": 0.515592017500619,
+        "p_optimal_mean": 0.0012060533761291301,
+        "evals_mean": 32.375,
+        "runtime_mean_s": 2.2887216436249105,
+        "win_vs_exact": 0,
+        "tie_vs_exact": 6,
+        "loss_vs_exact": 2
+      },
+      {
+        "method": "QAOA-shots",
+        "n": 8,
+        "objective_mean": -1.7125871522817766,
+        "objective_std": 0.7697881887595167,
+        "gap_mean": 0.5564040678514661,
+        "gap_std": 0.19536383842690744,
+        "gap_median": 0.5858755964676405,
+        "valid_rate": 1.0,
+        "coverage_mean": 2.050087152281776,
+        "overlap_mean": 3.125,
+        "connected_rate": 1.0,
+        "p_valid_mean": 0.521484375,
+        "p_optimal_mean": 0.000701904296875,
+        "evals_mean": 32.375,
+        "runtime_mean_s": 2.2887216436249105,
+        "win_vs_exact": 0,
+        "tie_vs_exact": 0,
+        "loss_vs_exact": 8
+      },
+      {
+        "method": "QAOA-best-sample",
+        "n": 8,
+        "objective_mean": -3.8069400420878106,
+        "objective_std": 0.43010940125208513,
+        "gap_mean": 0.0,
+        "gap_std": 0.0,
+        "gap_median": 0.0,
+        "valid_rate": 1.0,
+        "coverage_mean": 2.6444400420878083,
+        "overlap_mean": 0.5,
+        "connected_rate": 1.0,
+        "p_valid_mean": 0.521484375,
+        "p_optimal_mean": 0.000701904296875,
+        "evals_mean": 32.375,
+        "runtime_mean_s": 2.2887216436249105,
+        "win_vs_exact": 0,
+        "tie_vs_exact": 8,
+        "loss_vs_exact": 0
+      },
+      {
+        "method": "Greedy",
+        "n": 8,
+        "objective_mean": -3.694365418935196,
+        "objective_std": 0.4842108735048531,
+        "gap_mean": 0.030830874409451287,
+        "gap_std": 0.04324139140816316,
+        "gap_median": 0.0,
+        "valid_rate": 1.0,
+        "coverage_mean": 2.6443654189351946,
+        "overlap_mean": 0.625,
+        "connected_rate": 1.0,
+        "p_valid_mean": null,
+        "p_optimal_mean": null,
+        "evals_mean": 42.0,
+        "runtime_mean_s": 5.323562498915635e-05,
+        "win_vs_exact": 0,
+        "tie_vs_exact": 5,
+        "loss_vs_exact": 3
+      },
+      {
+        "method": "SA",
+        "n": 8,
+        "objective_mean": -3.8069400420878106,
+        "objective_std": 0.43010940125208513,
+        "gap_mean": 0.0,
+        "gap_std": 0.0,
+        "gap_median": 0.0,
+        "valid_rate": 1.0,
+        "coverage_mean": 2.6444400420878083,
+        "overlap_mean": 0.5,
+        "connected_rate": 1.0,
+        "p_valid_mean": null,
+        "p_optimal_mean": null,
+        "evals_mean": 3000.0,
+        "runtime_mean_s": 0.11819246675003114,
+        "win_vs_exact": 0,
+        "tie_vs_exact": 8,
+        "loss_vs_exact": 0
+      },
+      {
+        "method": "Random",
+        "n": 8,
+        "objective_mean": -1.6037251933376615,
+        "objective_std": 0.42938174745238483,
+        "gap_mean": 0.5846741351640079,
+        "gap_std": 0.07393963315928434,
+        "gap_median": 0.579430751869177,
+        "valid_rate": 1.0,
+        "coverage_mean": 1.9866814428023645,
+        "overlap_mean": 2.875,
+        "connected_rate": 0.75,
+        "p_valid_mean": null,
+        "p_optimal_mean": null,
+        "evals_mean": 1000.0,
+        "runtime_mean_s": 0.006618730875061374,
+        "win_vs_exact": 0,
+        "tie_vs_exact": 0,
+        "loss_vs_exact": 8
+      }
+    ],
+    "wilcoxon_qaoa_vs_greedy": {
+      "a": "QAOA",
+      "b": "Greedy",
+      "n": 8,
+      "mean_diff": -0.07977523650042961,
+      "a_better": 3,
+      "b_better": 0,
+      "ties": 5,
+      "statistic": 0.0,
+      "p_value": 0.25,
+      "note": "not significant at 5% (p=0.250, 3 non-tied pairs); no reliable difference between the methods on these instances"
+    }
+  },
+  "agent": [
+    {
+      "report": "Family of four waving from a rooftop near C3. Small boat seen drifting at B4.",
+      "updates": [
+        [
+          "C3",
+          "boost"
+        ],
+        [
+          "B4",
+          "boost"
+        ]
+      ],
+      "placement_after": [
+        "A2",
+        "B4",
+        "C2",
+        "C3"
+      ],
+      "gap_after": 0.008268486026472585
+    },
+    {
+      "report": "Bridge down at A2, area is impassable. Power lines across B1, declare no-fly.",
+      "updates": [
+        [
+          "A2",
+          "block"
+        ],
+        [
+          "B1",
+          "block"
+        ]
+      ],
+      "placement_after": [
+        "A3",
+        "C2",
+        "C3",
+        "C4"
+      ],
+      "gap_after": 0.0
+    },
+    {
+      "report": "Sector C1 has been evacuated and cleared by ground teams.",
+      "updates": [
+        [
+          "C1",
+          "reduce"
+        ]
+      ],
+      "placement_after": [
+        "A3",
+        "C2",
+        "C3",
+        "C4"
+      ],
+      "gap_after": 0.0
+    },
+    {
+      "report": "Survivors stranded on a roof at A4; the building at B3 has collapsed.",
+      "updates": [
+        [
+          "A4",
+          "boost"
+        ],
+        [
+          "B3",
+          "block"
+        ]
+      ],
+      "placement_after": [
+        "A3",
+        "C2",
+        "C3",
+        "C4"
+      ],
+      "gap_after": 0.0
+    },
+    {
+      "report": "SOS signal from cell b2. Also unconfirmed chatter about Z9 and sector D5.",
+      "updates": [
+        [
+          "B2",
+          "boost"
+        ]
+      ],
+      "placement_after": [
+        "A3",
+        "C2",
+        "C3",
+        "C4"
+      ],
+      "gap_after": 0.0
+    }
+  ],
+  "bonus": {
+    "depth": [
+      {
+        "p": 1,
+        "gap": 0.007637883197196982,
+        "p_optimal": 0.0010391647129756529,
+        "p_valid": 0.470457037887094,
+        "evals": 25.333333333333332
+      },
+      {
+        "p": 2,
+        "gap": 0.007637883197196982,
+        "p_optimal": 0.0012131809062487266,
+        "p_valid": 0.5172016431846786,
+        "evals": 30.0
+      },
+      {
+        "p": 3,
+        "gap": 0.007637883197196982,
+        "p_optimal": 0.0013436430828848076,
+        "p_valid": 0.5688711292576178,
+        "evals": 41.666666666666664
+      }
+    ],
+    "penalty": [
+      {
+        "multiplier": 0.25,
+        "p_valid": 0.4914542557117805,
+        "gap": 0.007637883197196757,
+        "ground_state_valid": 0.6666666666666666
+      },
+      {
+        "multiplier": 0.5,
+        "p_valid": 0.5214077001903727,
+        "gap": 0.007637883197197118,
+        "ground_state_valid": 1.0
+      },
+      {
+        "multiplier": 1.0,
+        "p_valid": 0.5172016431846786,
+        "gap": 0.007637883197196982,
+        "ground_state_valid": 1.0
+      },
+      {
+        "multiplier": 2.0,
+        "p_valid": 0.5206893604288697,
+        "gap": 0.007637883197199179,
+        "ground_state_valid": 1.0
+      },
+      {
+        "multiplier": 4.0,
+        "p_valid": 0.5233126673117422,
+        "gap": 0.007637883197190591,
+        "ground_state_valid": 1.0
+      }
+    ],
+    "warm_start": {
+      "warm": {
+        "evals": 29,
+        "evals_to_converge": 13,
+        "final_energy": 1.054245497522839,
+        "gap": 0.008268486026472585,
+        "p_optimal": 0.0012759053681626064,
+        "p_valid": 0.5579604776085338
+      },
+      "random_init_mean": {
+        "evals": 54.0,
+        "evals_to_converge": 45.0,
+        "final_energy": 24.189644146910478,
+        "gap": 0.5252790316133861,
+        "p_optimal": 0.0009298178450701904,
+        "p_valid": 0.4397727344113147
+      }
+    },
+    "optimizers": [
+      {
+        "optimizer": "COBYLA",
+        "gap": 0.007637883197196982,
+        "evals": 30.0,
+        "runtime_s": 2.3995323680002607
+      },
+      {
+        "optimizer": "NELDER_MEAD",
+        "gap": 0.007637883197196982,
+        "evals": 60.0,
+        "runtime_s": 4.164063569333393
+      },
+      {
+        "optimizer": "SPSA",
+        "gap": 0.49826970831789,
+        "evals": 120.0,
+        "runtime_s": 13.927745973000128
+      }
+    ],
+    "noise": [
+      {
+        "level": 0.0,
+        "p_optimal": 0.000732421875,
+        "p_valid": 0.51611328125,
+        "mean_energy": 0.9147160590729987
+      },
+      {
+        "level": 0.5,
+        "p_optimal": 0.000244140625,
+        "p_valid": 0.38037109375,
+        "mean_energy": 4.04216237783594
+      },
+      {
+        "level": 1.0,
+        "p_optimal": 0.000732421875,
+        "p_valid": 0.30029296875,
+        "mean_energy": 7.186403411635275
+      },
+      {
+        "level": 2.0,
+        "p_optimal": 0.000244140625,
+        "p_valid": 0.221435546875,
+        "mean_energy": 13.100638509916372
+      },
+      {
+        "level": 4.0,
+        "p_optimal": 0.0,
+        "p_valid": 0.1494140625,
+        "mean_energy": 20.364782013008334
+      }
+    ],
+    "landscape": {
+      "grid_min": 2.2624427126031534,
+      "qaoa_p1_energy": 2.7203791438864893,
+      "optimum_gamma_beta": [
+        0.41257740324955805,
+        -0.2925454832865951
+      ]
+    },
+    "scaling": [
+      {
+        "n_qubits": 8,
+        "time_per_eval_s": 0.06065206159992158,
+        "statevector_bytes": 4096,
+        "exact_time_s": 0.0003696700000546116
+      },
+      {
+        "n_qubits": 10,
+        "time_per_eval_s": 0.09106138560000546,
+        "statevector_bytes": 16384,
+        "exact_time_s": 0.000802728000053321
+      },
+      {
+        "n_qubits": 12,
+        "time_per_eval_s": 0.11371066159999828,
+        "statevector_bytes": 65536,
+        "exact_time_s": 0.001437458000054903
+      },
+      {
+        "n_qubits": 14,
+        "time_per_eval_s": 0.16971267579992855,
+        "statevector_bytes": 262144,
+        "exact_time_s": 0.0013711980000152835
+      },
+      {
+        "n_qubits": 16,
+        "time_per_eval_s": 0.2499862103999476,
+        "statevector_bytes": 1048576,
+        "exact_time_s": 0.0018864240000766586
+      }
+    ],
+    "xy_mixer": [
+      {
+        "mixer": "X (standard)",
+        "p_valid": 0.5172016431846786,
+        "p_optimal": 0.0012131809062487266,
+        "gap": 0.007637883197196982,
+        "evals": 30.0
+      },
+      {
+        "mixer": "XY ring + Dicke",
+        "p_valid": 1.000000000000002,
+        "p_optimal": 0.004903674437249327,
+        "gap": 0.151211508490923,
+        "evals": 120.0
+      }
+    ]
+  },
+  "figures": [
+    "01_data_overview.png",
+    "02_heatmap_prediction.png",
+    "03_cnn_training_curves.png",
+    "04_placement_map.png",
+    "05_method_comparison.png",
+    "06_qaoa_convergence.png",
+    "07_bitstring_probabilities.png",
+    "08_optimality_gap.png",
+    "09_agent_before_after.png",
+    "10_depth_study.png",
+    "11_penalty_sensitivity.png",
+    "12_warm_start.png",
+    "13_optimizer_comparison.png",
+    "14_noise_robustness.png",
+    "15_landscape_p1.png",
+    "16_scaling.png",
+    "17_circuit_diagram.png",
+    "18_architecture.png",
+    "19_xy_mixer.png"
+  ]
+}

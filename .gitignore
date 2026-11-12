@@ -1,0 +1,7 @@
+floodwing_pkg/
+notebook/floodwing_pkg/
+data/
+.pytest_work/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/

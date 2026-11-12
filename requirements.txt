@@ -1,0 +1,25 @@
+# FloodWing requirements. Tested together on 2026-11-12 (Python 3.13, CPU).
+# The Qiskit stack is pinned exactly: qiskit-algorithms 0.4 needs V2 samplers
+# and the code was validated against these versions.
+qiskit==1.4.6
+qiskit-aer==0.18.2
+qiskit-algorithms==0.4.0
+qiskit-optimization==0.7.0
+pylatexenc==2.11          # Qiskit matplotlib circuit drawer
+# Data access (Sen1Floods11 on public GCS; synthetic fallback needs neither at runtime)
+rasterio>=1.3,<2
+gcsfs>=2024.2
+# Scientific stack: lower bounds only, so Kaggle's preinstalled builds (and the
+# CUDA-matched torch) are kept. Versions used for the reference run:
+# numpy 2.5.3, scipy 1.18.1, pandas 3.0.5, matplotlib 3.11.2, seaborn 0.13.2,
+# scikit-learn 1.9.1, torch 2.15.0, pillow 12.3.0, pytest 9.x
+numpy>=1.26
+scipy>=1.11
+pandas>=2.0
+matplotlib>=3.8
+seaborn>=0.13
+scikit-learn>=1.3
+torch>=2.1
+pillow>=10.0
+tqdm>=4.66
+pytest>=7.4
