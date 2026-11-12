@@ -38,7 +38,7 @@ The one-liner reproduces every table, figure and `results/summary.json`. Python 
 
 | Mode | Reference run (2-core CPU sandbox) | Target on Kaggle CPU |
 | --- | --- | --- |
-| `FAST_MODE=True` | about 5 minutes end to end | under 30 minutes |
+| `FAST_MODE=True` | about 5 minutes end to end (305 s) | under 30 minutes |
 | `FAST_MODE=False` | not timed here (about 6x more QAOA work) | under 90 minutes |
 
 The slowest stages are the noise study (Aer trajectories at 4096 shots) and the optimizer comparison (SPSA uses about 4x more evaluations).
@@ -50,12 +50,12 @@ A time budget in `Config` (`time_budget_fast_s`, `time_budget_full_s`) skips rem
 | Method | Mean gap | Median gap | Ties / losses vs exact | Valid | P(valid) | P(optimal) | Connected to base | Evaluations | Time / instance |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Exact | 0.00% | 0.00% | 8 / 0 | 100% | n/a | n/a | 100% | 495 | 0.001 s |
-| QAOA | 0.94% | 0.00% | 6 / 2 | 100% | 0.516 | 0.0012 | 100% | 32 | 2.289 s |
-| QAOA-shots | 55.64% | 58.59% | 0 / 8 | 100% | 0.521 | 0.0007 | 100% | 32 | 2.289 s |
-| QAOA-best-sample | 0.00% | 0.00% | 8 / 0 | 100% | 0.521 | 0.0007 | 100% | 32 | 2.289 s |
+| QAOA | 0.94% | 0.00% | 6 / 2 | 100% | 0.516 | 0.0012 | 100% | 32 | 2.417 s |
+| QAOA-shots | 55.64% | 58.59% | 0 / 8 | 100% | 0.521 | 0.0007 | 100% | 32 | 2.417 s |
+| QAOA-best-sample | 0.00% | 0.00% | 8 / 0 | 100% | 0.521 | 0.0007 | 100% | 32 | 2.417 s |
 | Greedy | 3.08% | 0.00% | 5 / 3 | 100% | n/a | n/a | 100% | 42 | 0.000 s |
-| SA | 0.00% | 0.00% | 8 / 0 | 100% | n/a | n/a | 100% | 3000 | 0.118 s |
-| Random | 58.47% | 57.94% | 0 / 8 | 100% | n/a | n/a | 75% | 1000 | 0.007 s |
+| SA | 0.00% | 0.00% | 8 / 0 | 100% | n/a | n/a | 100% | 3000 | 0.132 s |
+| Random | 58.47% | 57.94% | 0 / 8 | 100% | n/a | n/a | 75% | 1000 | 0.008 s |
 <!-- RESULTS_TABLE_END -->
 
 Gap is `(f - f*) / |f*|` against the exact optimum. Ties/losses count instances where a method matched or missed the optimum.
@@ -143,6 +143,8 @@ floodwing/
   tests/test_core.py                  # 14 pytest tests
   tools/build_notebook.py             # writes the notebook from src/
   tools/results_table.py              # README results table from summary.csv
+  tools/build_report.js               # report/FloodWing_Report.docx from results/ (node tools/build_report.js)
+  report/FloodWing_Report.docx        # submission report
   results/figures/*.png  results/tables/*.csv  results/summary.json
 ```
 

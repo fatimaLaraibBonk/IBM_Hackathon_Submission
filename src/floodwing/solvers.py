@@ -232,11 +232,15 @@ def describe_primitives(cfg: Config) -> str:
             f"final sample: {cfg.shots} shots | exact probabilities: qiskit.quantum_info.Statevector")
 
 
-def make_optimizer(name: str, maxiter: int, rhobeg: float = 0.15):
+def make_optimizer(name: str, maxiter: int, rhobeg: float = 0.15, seed: int | None = None):
     """qiskit_algorithms optimizer by name: COBYLA, SPSA or NELDER_MEAD."""
     from qiskit_algorithms import optimizers as opt
 
     name = name.upper()
+    if seed is not None:   # SPSA draws its perturbations from algorithm_globals
+        from qiskit_algorithms.utils import algorithm_globals
+
+        algorithm_globals.random_seed = seed
     if name == "COBYLA":
         return opt.COBYLA(maxiter=maxiter, rhobeg=rhobeg)
     if name == "SPSA":
@@ -384,7 +388,7 @@ def solve_qaoa(problem: PlacementProblem, cfg: Config, *, reps: int | None = Non
         kwargs: dict[str, Any] = {"aggregation": cfg.cvar_alpha} if cfg.cvar_alpha else {}
         if info.version == "V2" and pm is not None:
             kwargs["transpiler"] = pm
-        qaoa = QAOA(sampler, make_optimizer(optimizer, maxiter, cfg.cobyla_rhobeg), reps=reps,
+        qaoa = QAOA(sampler, make_optimizer(optimizer, maxiter, cfg.cobyla_rhobeg, seed + r), reps=reps,
                     initial_point=x0, callback=callback, **kwargs)
         res = qaoa.compute_minimum_eigenvalue(op)
         total_evals += int(res.cost_function_evals or len(history))

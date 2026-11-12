@@ -448,49 +448,60 @@ def fig_circuit(circuit, fig_dir: Path) -> plt.Figure:
 
 
 def fig_architecture(fig_dir: Path) -> plt.Figure:
-    """Fig 18: pipeline architecture."""
+    """Fig 18: pipeline architecture (3 x 4 grid of components, QAOA accented)."""
+    W, H = 2.2, 0.72
+    cols = {"a": 0.24, "b": 2.70, "c": 5.16}
+    rows = {"1": 0.56, "2": 1.68, "3": 2.80, "4": 3.92}
     boxes = {
-        "data": (0.02, 0.62, "Sen1Floods11 subset\n(or synthetic fallback)\nS2 + water labels"),
-        "feat": (0.21, 0.62, "Feature engineering\nwater, NDVI, NDBI,\nedge proximity (64x64)"),
-        "cnn": (0.40, 0.62, "CNN heatmap\n(<100k params)\nproxy survivor likelihood"),
-        "report": (0.40, 0.22, "Text field report"),
-        "agent": (0.59, 0.22, "Rule-based agent\n(boost / block / reduce)"),
-        "w": (0.59, 0.62, "Weights w_i\n+ blocked cells"),
-        "qubo": (0.78, 0.62, "QUBO builder\ncoverage, overlap,\nradio links, sum x = k"),
-        "qaoa": (0.78, 0.22, "Qiskit QAOA\n(Aer sampler, COBYLA)"),
-        "base": (0.97, 0.62, "Baselines\nexact, greedy,\nSA, random"),
-        "out": (0.97, 0.22, "Placement + comparison\ngap, P(optimal),\nconnectivity"),
+        "data": ("a", "1", "Flood chips", "Sen1Floods11 S2 + water mask", "or synthetic fallback"),
+        "feat": ("b", "1", "Feature maps 64 x 64", "water, NDVI, NDBI,", "shoreline proximity"),
+        "cnn": ("c", "1", "CNN heatmap", "23,905 parameters", "one score per cell, 0 to 1"),
+        "report": ("a", "2", "Field report", "plain text from rescuers", "roof at A4, B3 collapsed"),
+        "agent": ("b", "2", "Keyword agent", "boost x1.5, reduce x0.5,", "block sets w = 0"),
+        "w": ("c", "2", "Weights w, blocked B", "12 cells, rescaled 0 to 1", "rebuilt after every report"),
+        "qubo": ("c", "3", "QUBO builder", "coverage, overlap, radio links", "plus P(sum x - 4)^2, P = 3.8"),
+        "qaoa": ("b", "3", "Qiskit QAOA, p = 2", "12 qubits, Aer sampler", "COBYLA tunes 4 angles"),
+        "base": ("c", "4", "Classical baselines", "exact, greedy,", "simulated annealing, random"),
+        "out": ("b", "4", "Placement + comparison", "4 hover cells, gap vs exact,", "P(optimal), link to base"),
     }
-    arrows = [("data", "feat"), ("feat", "cnn"), ("cnn", "w"), ("report", "agent"), ("agent", "w"), ("w", "qubo"),
-              ("qubo", "qaoa"), ("qubo", "base"), ("qaoa", "out"), ("base", "out")]
-    colors = {"data": "sky", "feat": "sky", "cnn": "green", "report": "yellow", "agent": "yellow", "w": "green",
-              "qubo": "purple", "qaoa": "blue", "base": "orange", "out": "grey"}
-    W, H = 0.155, 0.22
     with style():
-        fig, ax = plt.subplots(figsize=(15, 4.6))
-        ax.set_xlim(0, 1.15)
-        ax.set_ylim(0, 1)
+        fig, ax = plt.subplots(figsize=(10.2, 6.6))
+        ax.set_xlim(0, 7.6)
+        ax.set_ylim(4.88, 0)
         ax.axis("off")
-        for key, (x, y, label) in boxes.items():
-            ax.add_patch(FancyBboxPatch((x, y), W, H, boxstyle="round,pad=0.01,rounding_size=0.02",
-                                        facecolor=OKABE_ITO[colors[key]], alpha=0.28 if key != "qaoa" else 0.55,
-                                        edgecolor="#333333", linewidth=1.2))
-            ax.text(x + W / 2, y + H / 2, label, ha="center", va="center", fontsize=8.8,
-                    fontweight="bold" if key == "qaoa" else "normal")
-        for a, b in arrows:
-            xa, ya, _ = boxes[a]
-            xb, yb, _ = boxes[b]
-            if abs(ya - yb) < 1e-6:
-                start, end = (xa + W, ya + H / 2), (xb, yb + H / 2)
-            elif abs(xa - xb) < 1e-6 and ya > yb:      # downward
-                start, end = (xa + W / 2, ya), (xb + W / 2, yb + H)
-            elif abs(xa - xb) < 1e-6:                   # upward
-                start, end = (xa + W / 2, ya + H), (xb + W / 2, yb)
-            else:
-                start, end = (xa + W, ya + H / 2), (xb + W / 2, yb)
-            ax.annotate("", xy=end, xytext=start, arrowprops=dict(arrowstyle="-|>", color="#333333", lw=1.4))
-        ax.set_title("FloodWing architecture: ML prepares the problem, QAOA chooses the placement",
-                     fontsize=12, fontweight="bold")
+        for key, (c, r, name, l1, l2) in boxes.items():
+            x, y = cols[c], rows[r]
+            main = key == "qaoa"
+            ax.add_patch(FancyBboxPatch((x, y), W, H, boxstyle="round,pad=0,rounding_size=0.08",
+                                        facecolor=OKABE_ITO["blue"] if main else "white", alpha=0.14 if main else 1,
+                                        edgecolor="none"))
+            ax.add_patch(FancyBboxPatch((x, y), W, H, boxstyle="round,pad=0,rounding_size=0.08", fill=False,
+                                        edgecolor=OKABE_ITO["blue"] if main else "#9A9A92",
+                                        linewidth=2 if main else 1.2))
+            ax.text(x + W / 2, y + 0.24, name, ha="center", va="center", fontsize=10.5, fontweight="bold", color="#1F1F1F")
+            ax.text(x + W / 2, y + 0.44, l1, ha="center", va="center", fontsize=9, color="#1F1F1F" if main else "#555555")
+            ax.text(x + W / 2, y + 0.60, l2, ha="center", va="center", fontsize=9, color="#1F1F1F" if main else "#555555")
+
+        def arrow(x0, y0, x1, y1):
+            ax.annotate("", xy=(x1, y1), xytext=(x0, y0),
+                        arrowprops=dict(arrowstyle="-|>", color="#8C8C84", lw=1.3, shrinkA=0, shrinkB=0))
+
+        mid = H / 2
+        for r in ("1", "2"):
+            arrow(cols["a"] + W, rows[r] + mid, cols["b"], rows[r] + mid)
+            arrow(cols["b"] + W, rows[r] + mid, cols["c"], rows[r] + mid)
+        cx_c, cx_b = cols["c"] + W / 2, cols["b"] + W / 2
+        arrow(cx_c, rows["1"] + H, cx_c, rows["2"])
+        arrow(cx_c, rows["2"] + H, cx_c, rows["3"])
+        arrow(cols["c"], rows["3"] + mid, cols["b"] + W, rows["3"] + mid)
+        arrow(cx_c, rows["3"] + H, cx_c, rows["4"])
+        arrow(cx_b, rows["3"] + H, cx_b, rows["4"])
+        arrow(cols["c"], rows["4"] + mid, cols["b"] + W, rows["4"] + mid)
+        ax.text(0.24, 0.30, "ML and the agent build the problem; QAOA chooses the drone cells",
+                fontsize=13, fontweight="bold", color="#1F1F1F", va="center")
+        ax.text(0.24, 3.30, "Each new report rebuilds w and B,", fontsize=9, color="#555555")
+        ax.text(0.24, 3.50, "then QAOA re-solves from its last", fontsize=9, color="#555555")
+        ax.text(0.24, 3.70, "angles (warm start).", fontsize=9, color="#555555")
         return _save(fig, fig_dir, "18_architecture")
 
 
