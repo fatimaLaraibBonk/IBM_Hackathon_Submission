@@ -1,5 +1,7 @@
 # FloodWing
 
+**Members: Fatima Laraib, Huzaifa Rahman, Fizza Hussain **
+
 Hybrid CNN + agent + QAOA drone placement for flood search-and-rescue.
 Qiskit Fall Fest 2026 | Domain: UAVs & Robotics (Disaster Response).
 
